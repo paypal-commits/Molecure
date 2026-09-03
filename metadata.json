@@ -1,0 +1,6 @@
+{
+  "name": "Molecure",
+  "description": "Science-backed personalized nutrigenomics and antioxidant supplements supporting cellular health and redox homeostasis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
