@@ -1,4 +1,4 @@
-import { Product, BlogPost, ResearchArticle, FAQItem } from "../types";
+import { Product, BlogPost, ResearchArticle, FAQItem, HeroContent, ScienceContent, AboutContent, ContactContent, MediaAsset, SiteContent } from "../types";
 
 export const PRODUCTS: Product[] = [
   {
@@ -308,3 +308,139 @@ export const FAQ_ITEMS: FAQItem[] = [
     category: "science"
   }
 ];
+
+export const DEFAULT_HERO: HeroContent = {
+  badgeText: "Breakthrough: Nutrigenomics-Driven Supplementation",
+  headline: "Science Meets",
+  headlineGradient: "Personalized Nutrition",
+  subheadline: "Evidence-based nutritional solutions designed to support your body's natural antioxidant defense. Optimize cellular longevity based on your genetic biomarkers.",
+  videoUrl: "https://sf5jobmydr0lqlek.public.blob.vercel-storage.com/Molecure_commercial_science_well%E2%80%A6_202607120156.mp4",
+  shopButtonText: "Shop Personalized Packs",
+  scienceButtonText: "Learn the Science",
+  geneticEquationTitle: "Why Generic Vitamins Fail Your Antioxidant Defenses",
+  geneticEquationText1: "Studies show that common polymorphisms (like MnSOD Val16Ala rs4880) restrict enzyme entry into mitochondrial space, leaving cell DNA vulnerable to oxidative decay. Regular supplements can't target these transport limitations.",
+  geneticEquationText2: "Molecure delivers precise, bioavailable manganese and selenium chelates suspended in active lipid matrices, utilizing secondary pathways to bypass genetic bottlenecks.",
+  stats: [
+    { label: "Bioavailability", value: "99.8%", desc: "Nanoliposomal encapsulation" },
+    { label: "Genomic Profiles", value: "15,000+", desc: "Sequenced & matched" },
+    { label: "Clinical Reference", value: "7 Years", desc: "Machine learning datasets" }
+  ]
+};
+
+export const DEFAULT_SCIENCE: ScienceContent = {
+  badge: "CLINICAL DATA & VALIDATION",
+  title: "The Molecular Mechanics of Cellular Longevity",
+  subtitle: "Explore how genetic variants (SNPs) alter endogenous antioxidant enzyme synthesis and how targeted dietary cofactors restore mitochondrial redox balance.",
+  heroNotice: "Genotype-directed nutrigenomic dosing restores cellular equilibrium.",
+  simulationTitle: "Interactive MnSOD Transport Simulator",
+  simulationDescription: "Adjust dietary antioxidant cofactors to observe mitochondrial oxidative stress response across distinct genotypes."
+};
+
+export const DEFAULT_ABOUT: AboutContent = {
+  badge: "WHO WE ARE",
+  title: "Our Story & Scientific Philosophy",
+  story: "Molecure was founded to bridge the gap between breakthrough cellular research and daily nutritional habits. We build products designed to support your body's natural antioxidant defense at the DNA level.",
+  nutrigenomicsTitle: "Nutrigenomics Explained Simply",
+  nutrigenomicsExplanation: "Think of your DNA as a massive, highly detailed blueprint for a fortress. This fortress has a natural defensive guard—a network of enzymes (like SOD and GPX) synthesized inside your cells that act as sentries, continuously neutralizing free radicals that leak from metabolic powerhouses. Nutrigenomics uses targeted nutrients to reinforce those exact sentries or open alternative doorways.",
+  mission: "To eliminate generic trial-and-error wellness through clinical genomics and AI-driven precision therapeutics.",
+  vision: "A future where every human's daily nutrition is tailored to their unique DNA sequence and metabolic bottlenecks.",
+  team: [
+    {
+      id: "member-1",
+      name: "Dr. Evelyn Vance, Ph.D.",
+      role: "Chief Scientific Officer & Co-Founder",
+      bio: "18+ years of postdoctoral research in mitochondrial biology, redox biochemistry, and cellular senescence at Cambridge & Stanford.",
+      image: "https://images.unsplash.com/photo-1594824813576-92931d8e1c66?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+      id: "member-2",
+      name: "Danielle Stella, M.S.",
+      role: "Lead AI Bioinformatics Engineer",
+      bio: "Specializes in neural network architecture for genomics clinics, having led the Dec0ded 7-year machine learning development.",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+      id: "member-3",
+      name: "Marcus Thorne, Pharm.D.",
+      role: "Director of Liposomal Formulations",
+      bio: "Pioneered nanoliposomal drug delivery kinetics and GMP encapsulation protocols for unstable plant polyphenols.",
+      image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400"
+    }
+  ]
+};
+
+export const DEFAULT_CONTACT: ContactContent = {
+  badge: "CONNECT WITH US",
+  title: "Consult Our Science Team",
+  subtitle: "Have questions about your genetic markers or formulation cofactors? Reach out to our scientific advisory board for assistance.",
+  address: "Biotech Innovation Campus, Tower 4, Suite 800",
+  cityStateZip: "South San Francisco, CA 94080",
+  phone: "+1 (800) 592-GENE",
+  email: "scientific-affairs@molecure.com",
+  hours: "Monday – Friday: 8:00 AM – 6:00 PM PST",
+  labNotice: "Clinical consultations and genomic pack reviews are conducted by certified bioinformatics advisors."
+};
+
+export const DEFAULT_MEDIA: MediaAsset[] = [
+  {
+    id: "media-1",
+    title: "Molecure Biotech Caduceus Logo",
+    url: "https://sf5jobmydr0lqlek.public.blob.vercel-storage.com/Upscale_logo_quality_enhance_2K_202607132201.jpeg",
+    category: "general",
+    createdAt: "2026-07-13"
+  },
+  {
+    id: "media-2",
+    title: "Clipos Curcumin & Resveratrol Commercial Photo",
+    url: "/src/assets/images/curcumin_resveratrol_clipos_1788471069017.jpg",
+    category: "product",
+    createdAt: "2026-09-03"
+  },
+  {
+    id: "media-3",
+    title: "Glutathione Liposomal Supplement",
+    url: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400",
+    category: "product",
+    createdAt: "2026-07-01"
+  },
+  {
+    id: "media-4",
+    title: "Luteolin Neuroprotective Vial",
+    url: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=400",
+    category: "product",
+    createdAt: "2026-07-01"
+  },
+  {
+    id: "media-5",
+    title: "Tanshinone CoQ10 Vascular Shield",
+    url: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&q=80&w=400",
+    category: "product",
+    createdAt: "2026-07-01"
+  },
+  {
+    id: "media-6",
+    title: "Liposomal NMN Catalyst",
+    url: "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&q=80&w=400",
+    category: "product",
+    createdAt: "2026-07-01"
+  },
+  {
+    id: "media-7",
+    title: "Dec0ded Bespoke Pack",
+    url: "https://images.unsplash.com/photo-1555633514-abcee6ab92e1?auto=format&fit=crop&q=80&w=400",
+    category: "product",
+    createdAt: "2026-07-01"
+  }
+];
+
+export const DEFAULT_SITE_CONTENT: SiteContent = {
+  products: PRODUCTS,
+  articles: RESEARCH_ARTICLES,
+  posts: BLOG_POSTS,
+  faqs: FAQ_ITEMS,
+  hero: DEFAULT_HERO,
+  science: DEFAULT_SCIENCE,
+  about: DEFAULT_ABOUT,
+  contact: DEFAULT_CONTACT,
+  media: DEFAULT_MEDIA
+};

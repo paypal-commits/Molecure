@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -14,7 +15,134 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
+  // Allow larger payload for image uploading / base64 content
+  app.use(express.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+  // Static uploads directory
+  const uploadsDir = path.join(process.cwd(), "uploads");
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+  app.use("/uploads", express.static(uploadsDir));
+
+  // Storage for site content JSON
+  const dataDir = path.join(process.cwd(), "data");
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+  const contentFilePath = path.join(dataDir, "siteContent.json");
+
+  // Admin authentication endpoint
+  app.post("/api/admin/login", (req: express.Request, res: express.Response): void => {
+    const { email, password } = req.body || {};
+    if (
+      email &&
+      email.trim().toLowerCase() === "pappuott@gmail.com" &&
+      password === "Admin@2026"
+    ) {
+      res.json({
+        success: true,
+        token: `admin_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        user: {
+          email: "pappuott@gmail.com",
+          role: "Super Admin",
+          name: "Molecure Admin"
+        }
+      });
+    } else {
+      res.status(401).json({
+        error: "Invalid credentials. Access restricted to authorized personnel."
+      });
+    }
+  });
+
+  // Get site content
+  app.get("/api/site-content", (req: express.Request, res: express.Response): void => {
+    try {
+      if (fs.existsSync(contentFilePath)) {
+        const fileData = fs.readFileSync(contentFilePath, "utf-8");
+        const parsed = JSON.parse(fileData);
+        res.json({ success: true, data: parsed });
+      } else {
+        res.json({ success: false, data: null });
+      }
+    } catch (err: any) {
+      console.error("Error reading siteContent.json:", err);
+      res.status(500).json({ error: "Failed to read content file", details: err.message });
+    }
+  });
+
+  // Save/update site content
+  app.put("/api/site-content", (req: express.Request, res: express.Response): void => {
+    try {
+      const content = req.body;
+      if (!content || typeof content !== "object") {
+        res.status(400).json({ error: "Invalid content body" });
+        return;
+      }
+      fs.writeFileSync(contentFilePath, JSON.stringify(content, null, 2), "utf-8");
+      res.json({ success: true, timestamp: new Date().toISOString() });
+    } catch (err: any) {
+      console.error("Error writing siteContent.json:", err);
+      res.status(500).json({ error: "Failed to save content", details: err.message });
+    }
+  });
+
+  // Reset site content
+  app.post("/api/site-content/reset", (req: express.Request, res: express.Response): void => {
+    try {
+      if (fs.existsSync(contentFilePath)) {
+        fs.unlinkSync(contentFilePath);
+      }
+      res.json({ success: true, message: "Site content reset to initial defaults." });
+    } catch (err: any) {
+      console.error("Error resetting site content:", err);
+      res.status(500).json({ error: "Failed to reset content", details: err.message });
+    }
+  });
+
+  // Image / file upload endpoint
+  app.post("/api/upload", (req: express.Request, res: express.Response): void => {
+    try {
+      const { dataUrl, filename, title } = req.body || {};
+      if (!dataUrl) {
+        res.status(400).json({ error: "Missing dataUrl in request." });
+        return;
+      }
+
+      // Handle base64 data URI
+      const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (matches && matches.length === 3) {
+        const extension = matches[1].split("/")[1]?.replace("jpeg", "jpg") || "png";
+        const cleanName = (filename || `upload_${Date.now()}`)
+          .replace(/[^a-zA-Z0-9_-]/g, "_")
+          .replace(/\.[^/.]+$/, "");
+        const targetFilename = `${cleanName}_${Date.now()}.${extension}`;
+        const targetPath = path.join(uploadsDir, targetFilename);
+        const buffer = Buffer.from(matches[2], "base64");
+        fs.writeFileSync(targetPath, buffer);
+
+        res.json({
+          success: true,
+          url: `/uploads/${targetFilename}`,
+          title: title || cleanName
+        });
+      } else if (dataUrl.startsWith("http://") || dataUrl.startsWith("https://")) {
+        // External URL pass-through
+        res.json({
+          success: true,
+          url: dataUrl,
+          title: title || "External image asset"
+        });
+      } else {
+        res.status(400).json({ error: "Unsupported dataUrl format." });
+      }
+    } catch (err: any) {
+      console.error("Error handling upload:", err);
+      res.status(500).json({ error: "Failed to upload file", details: err.message });
+    }
+  });
 
   // Initialize Google GenAI securely on the server
   let ai: GoogleGenAI | null = null;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, ShoppingBag, Heart, Menu, X, Dna, ArrowRight, Activity, BookOpen, User, Sparkles } from "lucide-react";
+import { Search, ShoppingBag, Heart, Menu, X, Dna, ArrowRight, Activity, BookOpen, User, Sparkles, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Product } from "../types";
 
@@ -222,6 +222,21 @@ export default function Navigation({
               )}
             </button>
 
+            {/* Admin Portal Quick Access */}
+            <button
+              id="navbar-admin-btn"
+              onClick={() => setActiveTab("admin")}
+              className={`p-2.5 rounded-xl transition-colors relative ${
+                activeTab === "admin"
+                  ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                  : "hover:bg-white/10 text-slate-400 hover:text-white"
+              }`}
+              title="Admin Content Manager"
+              aria-label="Admin Portal"
+            >
+              <ShieldCheck className="w-5 h-5" />
+            </button>
+
             {/* Mobile Menu Icon */}
             <button
               id="mobile-menu-btn"
@@ -262,7 +277,7 @@ export default function Navigation({
                   {item.name}
                 </button>
               ))}
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-white/10 space-y-2">
                 <button
                   id="mobile-nav-quiz-btn"
                   onClick={() => {
@@ -276,6 +291,27 @@ export default function Navigation({
                     <span>Take DNA Personalization Quiz</span>
                   </span>
                   <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <button
+                  id="mobile-nav-admin-btn"
+                  onClick={() => {
+                    setActiveTab("admin");
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    activeTab === "admin"
+                      ? "text-emerald-400 bg-white/5 font-semibold"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <span className="flex items-center space-x-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Admin Content Panel</span>
+                  </span>
+                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-md bg-white/5 text-slate-400">
+                    Restricted
+                  </span>
                 </button>
               </div>
             </div>

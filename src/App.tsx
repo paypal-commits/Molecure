@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUp, Sparkles, CheckCircle2, ShieldCheck, Heart, ShoppingBag, Eye, Calendar } from "lucide-react";
+import { ArrowUp, Sparkles, CheckCircle2, ShieldCheck, Heart, ShoppingBag, Eye, Calendar, Lock } from "lucide-react";
 
 // Import custom page & layout components
 import Navigation from "./components/Navigation";
@@ -15,12 +15,14 @@ import About from "./components/About";
 import CartDrawer from "./components/CartDrawer";
 import Chatbot from "./components/Chatbot";
 import CelebrationNotification from "./components/CelebrationNotification";
+import AdminPanel from "./components/admin/AdminPanel";
 
-// Import data matrices & type definitions
-import { PRODUCTS, RESEARCH_ARTICLES, BLOG_POSTS, FAQ_ITEMS } from "./data/molecureData";
+// Import Content Provider & Context
+import { ContentProvider, useContent } from "./context/ContentContext";
 import { Product, CartItem } from "./types";
 
-export default function App() {
+function MainApp() {
+  const { content } = useContent();
   const [activePage, setActivePage] = useState<string>("home");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -116,6 +118,12 @@ export default function App() {
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
+  // Dynamic products, articles, posts, and faqs from content context
+  const products = content.products;
+  const articles = content.articles;
+  const posts = content.posts;
+  const faqs = content.faqs;
+
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 flex flex-col font-sans select-none antialiased relative overflow-x-hidden">
       
@@ -127,10 +135,12 @@ export default function App() {
       </div>
       
       {/* Top Banner Disclaimer */}
-      <div className="bg-slate-950/80 backdrop-blur-md text-slate-300 py-2.5 px-4 text-center text-[10px] sm:text-xs border-b border-white/5 relative z-10">
-        <span className="font-mono font-bold text-emerald-400 mr-2">FDA NOTICE:</span>
-        These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.
-      </div>
+      {activePage !== "admin" && (
+        <div className="bg-slate-950/80 backdrop-blur-md text-slate-300 py-2.5 px-4 text-center text-[10px] sm:text-xs border-b border-white/5 relative z-10">
+          <span className="font-mono font-bold text-emerald-400 mr-2">FDA NOTICE:</span>
+          These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.
+        </div>
+      )}
 
       {/* Navigation Header */}
       <Navigation
@@ -140,7 +150,7 @@ export default function App() {
         wishlistCount={wishlist.length}
         toggleCart={() => setIsCartOpen(true)}
         toggleWishlist={() => navigateTo("products")}
-        products={PRODUCTS}
+        products={products}
         onProductSelect={handleProductSelect}
         startPersonalizationQuiz={() => navigateTo("quiz")}
       />
@@ -152,7 +162,7 @@ export default function App() {
             <Hero
               onShopNow={() => navigateTo("products")}
               onLearnScience={() => navigateTo("science")}
-              bestSellers={PRODUCTS}
+              bestSellers={products}
               onProductSelect={handleProductSelect}
               addToCart={addToCart}
             />
@@ -208,7 +218,7 @@ export default function App() {
 
         {activePage === "products" && (
           <Products
-            products={PRODUCTS}
+            products={products}
             activeProduct={activeProduct}
             setActiveProduct={setActiveProduct}
             addToCart={addToCart}
@@ -219,21 +229,23 @@ export default function App() {
           />
         )}
 
-        {activePage === "research" && <ResearchCenter articles={RESEARCH_ARTICLES} />}
+        {activePage === "research" && <ResearchCenter articles={articles} />}
 
-        {activePage === "blog" && <Blog posts={BLOG_POSTS} />}
+        {activePage === "blog" && <Blog posts={posts} />}
 
-        {activePage === "faq" && <FAQ items={FAQ_ITEMS} />}
+        {activePage === "faq" && <FAQ items={faqs} />}
 
         {activePage === "about" && <About />}
 
         {activePage === "contact" && <Contact />}
 
+        {activePage === "admin" && <AdminPanel onBackToSite={() => navigateTo("home")} />}
+
         {activePage === "quiz" && (
           <div className="py-12 bg-transparent">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <PersonalizationQuiz
-                products={PRODUCTS}
+                products={products}
                 onQuizClose={() => navigateTo("products")}
                 onSelectResult={handleSelectResult}
                 addToCart={addToCart}
@@ -257,12 +269,20 @@ export default function App() {
             Clinically formulated nutrigenomic supplements supporting cellular redox balance, endogenous mitochondrial enzymes, and healthy aging pathways.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 text-xs text-slate-400">
+          <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-slate-400">
             <button onClick={() => navigateTo("about")} className="hover:text-white transition-colors">Our Philosophy</button>
             <button onClick={() => navigateTo("science")} className="hover:text-white transition-colors">Interactive Science</button>
             <button onClick={() => navigateTo("products")} className="hover:text-white transition-colors">Products</button>
             <button onClick={() => navigateTo("research")} className="hover:text-white transition-colors">Research</button>
             <button onClick={() => navigateTo("faq")} className="hover:text-white transition-colors">FDA FAQs</button>
+            <button
+              onClick={() => navigateTo("admin")}
+              className="hover:text-emerald-400 text-slate-400 transition-colors flex items-center space-x-1.5 px-2 py-1 rounded-md bg-white/5 hover:bg-emerald-500/10 border border-white/5 hover:border-emerald-500/20"
+              title="Restricted Staff Access"
+            >
+              <Lock className="w-3 h-3 text-emerald-400" />
+              <span>Admin Portal</span>
+            </button>
           </div>
 
           <div className="pt-6 border-t border-white/5 text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -315,5 +335,13 @@ export default function App() {
       />
 
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ContentProvider>
+      <MainApp />
+    </ContentProvider>
   );
 }

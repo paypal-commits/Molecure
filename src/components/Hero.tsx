@@ -3,6 +3,7 @@ import { ArrowRight, Shield, Award, CheckCircle2, Star, Sparkles, TrendingUp, He
 import { motion } from "motion/react";
 import ThreeMolecularCanvas from "./ThreeMolecularCanvas";
 import { Product } from "../types";
+import { useContent } from "../context/ContentContext";
 
 interface HeroProps {
   onShopNow: () => void;
@@ -19,6 +20,9 @@ export default function Hero({
   onProductSelect,
   addToCart,
 }: HeroProps) {
+  const { content } = useContent();
+  const hero = content.hero;
+
   // Simple animations
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -38,7 +42,8 @@ export default function Hero({
       {/* Background Video with optimized overlays - limited to the top hero fold */}
       <div className="absolute top-0 left-0 right-0 h-[650px] sm:h-[750px] lg:h-[820px] z-0 select-none pointer-events-none overflow-hidden">
         <video
-          src="https://sf5jobmydr0lqlek.public.blob.vercel-storage.com/Molecure_commercial_science_well%E2%80%A6_202607120156.mp4"
+          key={hero.videoUrl}
+          src={hero.videoUrl}
           autoPlay
           loop
           muted
@@ -73,7 +78,7 @@ export default function Hero({
               className="flex items-center space-x-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 rounded-full w-fit text-xs font-semibold shadow-xs"
             >
               <Sparkles className="w-4.5 h-4.5 text-emerald-400" />
-              <span>Breakthrough: Nutrigenomics-Driven Supplementation</span>
+              <span>{hero.badgeText}</span>
             </motion.div>
 
             {/* Headline */}
@@ -81,9 +86,9 @@ export default function Hero({
               variants={itemVariants}
               className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-white leading-tight"
             >
-              Science Meets <br />
+              {hero.headline} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-400">
-                Personalized Nutrition
+                {hero.headlineGradient}
               </span>
             </motion.h1>
 
@@ -92,7 +97,7 @@ export default function Hero({
               variants={itemVariants}
               className="text-slate-300 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mx-auto"
             >
-              Evidence-based nutritional solutions designed to support your body's natural antioxidant defense. Optimize cellular longevity based on your genetic biomarkers.
+              {hero.subheadline}
             </motion.p>
 
             {/* CTAs */}
@@ -105,7 +110,7 @@ export default function Hero({
                 onClick={onShopNow}
                 className="flex items-center justify-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition-all text-sm group"
               >
-                <span>Shop Personalized Packs</span>
+                <span>{hero.shopButtonText}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
@@ -113,7 +118,7 @@ export default function Hero({
                 onClick={onLearnScience}
                 className="flex items-center justify-center space-x-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold px-8 py-4 rounded-xl shadow-xs transition-all text-sm"
               >
-                <span>Learn the Science</span>
+                <span>{hero.scienceButtonText}</span>
               </button>
             </motion.div>
 
@@ -122,18 +127,12 @@ export default function Hero({
               variants={itemVariants}
               className="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-lg mx-auto w-full text-center"
             >
-              <div className="flex flex-col space-y-1">
-                <span className="font-display font-bold text-xl text-white">100%</span>
-                <span className="text-xs text-slate-400">Clinically Validated</span>
-              </div>
-              <div className="flex flex-col space-y-1">
-                <span className="font-display font-bold text-xl text-white">GMP</span>
-                <span className="text-xs text-slate-400">Certified Facility</span>
-              </div>
-              <div className="flex flex-col space-y-1">
-                <span className="font-display font-bold text-xl text-white">Third-Party</span>
-                <span className="text-xs text-slate-400">Purity Tested</span>
-              </div>
+              {hero.stats.map((stat, idx) => (
+                <div key={idx} className="flex flex-col space-y-1">
+                  <span className="font-display font-bold text-xl text-white">{stat.value}</span>
+                  <span className="text-xs text-slate-400">{stat.label}</span>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
 

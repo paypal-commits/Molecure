@@ -1,8 +1,12 @@
 import React from "react";
-import { Info, Award, Heart, ShieldAlert, Sparkles, Target, Eye } from "lucide-react";
+import { Info, Award, Heart, ShieldAlert, Sparkles, Target, Eye, Users } from "lucide-react";
 import { motion } from "motion/react";
+import { useContent } from "../context/ContentContext";
 
 export default function About() {
+  const { content } = useContent();
+  const { about } = content;
+
   return (
     <div id="about-section" className="py-12 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,13 +14,13 @@ export default function About() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full uppercase">
-            WHO WE ARE
+            {about.badge}
           </span>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mt-4 tracking-tight">
-            Our Story & Scientific Philosophy
+            {about.title}
           </h1>
           <p className="text-slate-300 mt-4 text-base sm:text-lg">
-            Molecure was founded to bridge the gap between breakthrough cellular research and daily nutritional habits. We build products designed to support your body's natural antioxidant defense at the DNA level.
+            {about.story}
           </p>
         </div>
 
@@ -39,14 +43,8 @@ export default function About() {
               <h3 className="font-display font-bold text-xl sm:text-2xl text-white tracking-tight">
                 Nutrigenomics Explained Simply
               </h3>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Think of your DNA as a massive, highly detailed blueprint for a fortress. This fortress has a natural defensive guard—a network of enzymes (like SOD and GPX) synthesized inside your cells that act as sentries, continuously neutralizing free radicals (harmful sparks) that leak from your metabolic powerhouses.
-              </p>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                However, due to subtle genetic variations (SNPs), some people are born with sentries that move slightly slower, or doorways that limit how fast defensive vitamins can enter. 
-              </p>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                <strong>Nutrigenomics</strong> is the science of using specific foods and targeted nutrients to reinforce those exact sentries or open alternative doorways, ensuring your cellular fortress remains robust and protected, promoting healthy aging.
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                {about.nutrigenomicsExplanation}
               </p>
             </div>
           </div>
@@ -61,7 +59,7 @@ export default function About() {
             </div>
             <h4 className="font-display font-bold text-base text-white mb-2">Our Mission</h4>
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              To engineer the world's most bioavailable, science-aligned supplements that match individual genomic variations, replacing generic solutions with high-precision cellular nutrition.
+              {about.mission}
             </p>
           </div>
 
@@ -71,7 +69,7 @@ export default function About() {
             </div>
             <h4 className="font-display font-bold text-base text-white mb-2">Our Vision</h4>
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              A world where nutritional guidance is fully individualized, utilizing predictive genomics and biochemistry to safely extend the human healthspan and maintain redox homeostasis.
+              {about.vision}
             </p>
           </div>
 
@@ -86,6 +84,48 @@ export default function About() {
           </div>
 
         </div>
+
+        {/* Scientific Advisory Board & Leadership */}
+        {about.team && about.team.length > 0 && (
+          <div className="mb-20 text-left">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full uppercase">
+                SCIENTIFIC LEADERSHIP
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mt-3">
+                Dec0ded Scientific Advisory Board
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 mt-2">
+                Pioneering clinicians and biochemists directing our cellular nutrigenomic research.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {about.team.map((member) => (
+                <div
+                  key={member.id}
+                  className="glass-card border border-white/10 bg-slate-950/30 p-6 rounded-3xl space-y-4 hover:border-emerald-500/30 transition-all group"
+                >
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      referrerPolicy="no-referrer"
+                      className="w-16 h-16 rounded-2xl object-cover bg-slate-900 border border-white/10 group-hover:border-emerald-400/50 transition-colors"
+                    />
+                    <div>
+                      <h4 className="font-display font-bold text-base text-white">{member.name}</h4>
+                      <p className="text-xs text-emerald-400 font-medium">{member.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed pt-2 border-t border-white/5">
+                    {member.bio}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Quality Commitment Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

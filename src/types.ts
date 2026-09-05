@@ -61,3 +61,69 @@ export interface FAQItem {
   answer: string;
   category: 'general' | 'science' | 'supplements' | 'shipping';
 }
+
+export interface HeroContent {
+  badgeText: string;
+  headline: string;
+  headlineGradient: string;
+  subheadline: string;
+  videoUrl: string;
+  shopButtonText: string;
+  scienceButtonText: string;
+  geneticEquationTitle: string;
+  geneticEquationText1: string;
+  geneticEquationText2: string;
+  stats: { label: string; value: string; desc: string }[];
+}
+
+export interface ScienceContent {
+  badge: string;
+  title: string;
+  subtitle: string;
+  heroNotice: string;
+  simulationTitle: string;
+  simulationDescription: string;
+}
+
+export interface AboutContent {
+  badge: string;
+  title: string;
+  story: string;
+  nutrigenomicsTitle: string;
+  nutrigenomicsExplanation: string;
+  mission: string;
+  vision: string;
+  team: { id: string; name: string; role: string; bio: string; image: string }[];
+}
+
+export interface ContactContent {
+  badge: string;
+  title: string;
+  subtitle: string;
+  address: string;
+  cityStateZip: string;
+  phone: string;
+  email: string;
+  hours: string;
+  labNotice: string;
+}
+
+export interface MediaAsset {
+  id: string;
+  title: string;
+  url: string;
+  category: 'product' | 'article' | 'team' | 'banner' | 'general';
+  createdAt: string;
+}
+
+export interface SiteContent {
+  products: Product[];
+  articles: ResearchArticle[];
+  posts: BlogPost[];
+  faqs: FAQItem[];
+  hero: HeroContent;
+  science: ScienceContent;
+  about: AboutContent;
+  contact: ContactContent;
+  media: MediaAsset[];
+}

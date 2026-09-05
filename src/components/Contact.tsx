@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send, HelpCircle, Check, Map } from "lucide-react";
+import { Mail, Phone, MapPin, Send, HelpCircle, Check, Map, Clock } from "lucide-react";
+import { useContent } from "../context/ContentContext";
 
 export default function Contact() {
+  const { content } = useContent();
+  const { contact } = content;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,13 +34,13 @@ export default function Contact() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full uppercase">
-            CONNECT WITH US
+            {contact.badge}
           </span>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mt-4 tracking-tight">
-            Consult Our Science Team
+            {contact.title}
           </h1>
           <p className="text-slate-300 mt-4 text-base sm:text-lg">
-            Have questions about your genetic markers or formulation cofactors? Reach out to our scientific advisory board for assistance.
+            {contact.subtitle}
           </p>
         </div>
 
@@ -56,7 +60,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase">Clinical Lab Location</h4>
-                    <p className="text-sm text-slate-300 mt-0.5">840 Research Parkway, Suite 12B<br />San Francisco, CA 94158</p>
+                    <p className="text-sm text-slate-300 mt-0.5">
+                      {contact.address}<br />{contact.cityStateZip}
+                    </p>
                   </div>
                 </div>
 
@@ -66,7 +72,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase">Scientific Queries</h4>
-                    <p className="text-sm text-slate-300 mt-0.5">science@molecure.com</p>
+                    <p className="text-sm text-slate-300 mt-0.5">{contact.email}</p>
                   </div>
                 </div>
 
@@ -76,7 +82,17 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white uppercase">Customer Concierge</h4>
-                    <p className="text-sm text-slate-300 mt-0.5">+1 (800) 555-MOLC</p>
+                    <p className="text-sm text-slate-300 mt-0.5">{contact.phone}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400 flex-shrink-0">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase">Hours & Availability</h4>
+                    <p className="text-sm text-slate-300 mt-0.5">{contact.hours}</p>
                   </div>
                 </div>
               </div>

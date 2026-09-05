@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Activity, Shield, Sparkles, BookOpen, Clock, AlertTriangle, ArrowRight, Check } from "lucide-react";
 import { motion } from "motion/react";
+import { useContent } from "../context/ContentContext";
 
 export default function TheScience() {
+  const { content } = useContent();
+  const { science } = content;
   const [antioxidantIntake, setAntioxidantIntake] = useState(50); // Slider 0 - 100
 
   // Calculate oxidative stress values based on genotype and antioxidant intake
@@ -49,13 +52,13 @@ export default function TheScience() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full uppercase">
-            Nutrigenomics & Cellular Longevity
+            {science.badge}
           </span>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white mt-4 tracking-tight">
-            The Molecular Proof Behind Molecure
+            {science.title}
           </h1>
           <p className="text-slate-300 mt-4 text-base sm:text-lg">
-            Translating complex clinical reviews into targeted bioavailable cofactors. Discover how your unique DNA influences cellular defense.
+            {science.subtitle}
           </p>
         </div>
 
